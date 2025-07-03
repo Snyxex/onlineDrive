@@ -55,7 +55,7 @@ export function getLogger(moduleName: string, level: string = process.env.LOG_LE
         dirname: logsPath,
         filename: `${moduleName}-%DATE%.log`,
         datePattern: 'YYYY-MM-DD',
-        maxFiles: '4d', // Keep logs for 4 days
+        maxFiles: '1d', // Keep logs for 4 days
         zippedArchive: true, // Compress old log files
         maxSize: '20m', // Rotate file if it exceeds 20MB
         format: fileLogFormat, // Apply the custom text format here
