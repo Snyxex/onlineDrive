@@ -1,15 +1,30 @@
-import express from "express";
-import { getAllUser, getUserByID, signin, signup } from "../controllers/user";
-import { checkAdmin, requireSignin } from "../common/user";
+// routes/userRoutes.ts
+import { Router } from "express";
+import {
+  signup,
+  signin,
+  getAllUser,
+  getUserByID,
+  updateUsername, 
+  updateEmail,    
+  updatePassword  ,
+  deleteAccount
+} from "../controllers/user";
+import { requireSignin, checkAdmin } from "../common/user";
 
-const router = express.Router();
-
-router.post("/signin", signin);
+const router = Router();
 
 router.post("/signup", signup);
+router.post("/signin", signin);
 
-router.get("/user", requireSignin, checkAdmin, getAllUser);
+router.get("/users", requireSignin, checkAdmin, getAllUser); // Admin only for getting all users
+router.get("/user/:_id", requireSignin, getUserByID);
 
-router.get("/user:_id", requireSignin, getUserByID);
+// New Routes for updating user information
+router.put("/user/update-username", requireSignin, updateUsername); // User can update their own username
+router.put("/user/update-email", requireSignin, updateEmail);       // User can update their own email
+router.put("/user/update-password", requireSignin, updatePassword); // User can update their own password
+
+router.delete("/user/delete-account", requireSignin, deleteAccount); // User can delete their own account
 
 export default router;

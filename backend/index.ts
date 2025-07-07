@@ -1,6 +1,7 @@
 //dependencies
 import express from 'express';
 import dotenv from 'dotenv';
+dotenv.config();
 import cors from 'cors';
 
 import { getLogger } from './src/common/logs';
@@ -12,7 +13,7 @@ import authRoutes from "./src/routes/user";
 
 // Load environment variables as early as possible
 connectToMongo();
-dotenv.config();
+
 
 const app = express();
 const port = process.env.PORT || 8080;
