@@ -16,6 +16,7 @@ body {
     padding: 48px 32px 40px 32px;
     background: #fff;
     border-radius: 22px;
+    border: 2px solid #141414; /* Schwarzer Rand */
     box-shadow: 0 12px 40px 0 rgba(20, 20, 20, 0.13), 0 2px 8px rgba(20, 20, 20, 0.08);
     text-align: center;
     backdrop-filter: blur(2px);
@@ -38,7 +39,7 @@ body {
    
   .landing-btn {
     padding: 13px 36px;
-    background: linear-gradient(90deg, #141414 0%, #000000 100%);
+    background: linear-gradient(90deg, #141414 0%, #444 100%);
     color: #fff;
     font-size: 1.08rem;
     font-weight: 600;
@@ -53,9 +54,9 @@ body {
    
   .landing-btn:hover,
   .landing-btn:focus {
-    background: linear-gradient(90deg, #000 0%, #000000 100%);
-    color: white;
+    background: linear-gradient(90deg, #000 0%, #222 100%);
     transform: translateY(-2px) scale(1.03);
+    color: white;
   }
    
   .landing-btn-outline {
@@ -72,6 +73,7 @@ body {
     border-color: #000;
     transform: translateY(-2px) scale(1.03);
   }
+   
    
   .parent {
     width: 320px;
@@ -189,4 +191,56 @@ body {
     font-size: 20px;
     font-weight: 900;
     color: #fff;
+  }
+   
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(20,20,20,0.55);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  .modal[style*="display:none"] {
+    display: none !important;
+  }
+  .modal-content {
+    background: #fff;
+    color: #141414;
+    padding: 2rem 2.5rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(20,20,20,0.18);
+    max-width: 400px;
+    width: 90vw;
+    position: relative;
+    text-align: left;
+  }
+  .close {
+    position: absolute;
+    right: 1.2rem;
+    top: 1.2rem;
+    font-size: 2rem;
+    color: #141414;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+  }
+  .close:hover {
+    color: #888;
+  }
+  .modal-content h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+  .modal-content ul {
+    margin: 1.2rem 0 0 0;
+    padding-left: 1.2rem;
+  }
+  .modal-content li {
+    margin-bottom: 0.7rem;
+    font-size: 1.05rem;
   }

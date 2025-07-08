@@ -5,6 +5,7 @@ import LoginPage from './pages/auth/login/LoginPage';
 import RegisterPage from './pages/auth/register/RegisterPage';
 import DashboardPage from './pages/home/dashboard/DashboardPage';
 import SettingsPage from './pages/home/settings/SettingsPage';
+import MorePage from './pages/more/MorePage';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/more" element={<MorePage />} />
         </Routes>
       </div>
     </Router>
