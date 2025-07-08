@@ -5,8 +5,8 @@ import {
   signin,
   getAllUser,
   getUserByID,
-  updateUsername, 
-  updateEmail,    
+  updateUsername,
+  updateEmail,
   updatePassword,
   updateTheme,
   deleteAccount
@@ -21,12 +21,12 @@ router.post("/signin", signin);
 router.get("/users", requireSignin, checkAdmin, getAllUser); // Admin only for getting all users
 router.get("/user/:_id", requireSignin, getUserByID);
 
-// New Routes for updating user information
-router.put("/user/update-username", requireSignin, updateUsername); // User can update their own username
-router.put("/user/update-email", requireSignin, updateEmail);       // User can update their own email
-router.put("/user/update-password", requireSignin, updatePassword); // User can update their own password
-router.put("/user/update-theme", requireSignin, updateTheme);       // User can update their own theme
+// Corrected Routes for updating user information (using hyphens)
+router.put("/user/update-username", requireSignin, updateUsername); // Changed _ to -
+router.put("/user/update-email", requireSignin, updateEmail);       // Changed _ to -
+router.put("/user/update-password", requireSignin, updatePassword); // Changed _ to -
+router.put("/user/update-theme", requireSignin, updateTheme);       // Changed _ to -
 
-router.delete("/user/delete-account", requireSignin, deleteAccount); // User can delete their own account
+router.delete("/user/delete-account", requireSignin, deleteAccount); // Changed _ to -
 
 export default router;

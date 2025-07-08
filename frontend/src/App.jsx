@@ -10,6 +10,7 @@ import MorePage from './pages/more/MorePage';
 import UsernamePage from './pages/home/settings/[auth]/username/username';
 import EmailPage from './pages/home/settings/[auth]/email/email'; 
 import PasswordPage from './pages/home/settings/[auth]/password/password'; 
+import DarkModeToggle from './components/Darkmode/DarkModeToggle';
 
 
 import PrivateRoute from './components/PrivateRoute';
@@ -34,6 +35,7 @@ const App = () => {
           </Route>
         </Routes>
       </div>
+  
     </Router>
   );
 };

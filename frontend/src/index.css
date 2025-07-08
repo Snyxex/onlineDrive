@@ -1,16 +1,12 @@
+/* Globale Farben für das helle Thema (Standard) */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --primary-background: #ffffff;
+  --secondary-background: #f0f2f5;
+  --text-color: #333333;
+  --heading-color: #1a1a1a;
+  --border-color: #dddddd;
+  --accent-color: #007bff;
+  /* Weitere Farben für spezifische Elemente */
 }
 
 a {

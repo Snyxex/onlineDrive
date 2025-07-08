@@ -1,0 +1,55 @@
+/* Basic styling for the toggle button */
+.theme-toggle-btn {
+    background-color: var(--primary-background-color); /* Use CSS variables for theme */
+    color: var(--primary-text-color);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .theme-toggle-btn:hover {
+    background-color: var(--secondary-background-color);
+  }
+  
+  .theme-toggle-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  /* Spinner styling */
+  .spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--accent-color); /* Use accent color for spinner */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Global dark mode styles (usually in a global CSS file or App.css) */
+  body.darkmode {
+    --primary-background-color: #333;
+    --secondary-background-color: #555;
+    --primary-text-color: #f0f0f0;
+    --border-color: #666;
+    --accent-color: #007bff; /* Example accent color */
+  }
+  
+  body {
+    --primary-background-color: #f0f0f0;
+    --secondary-background-color: #e0e0e0;
+    --primary-text-color: #333;
+    --border-color: #ccc;
+    --accent-color: #007bff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }

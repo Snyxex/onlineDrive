@@ -13,6 +13,9 @@ const Main = () => {
   const [isLoading, setIsLoading] = useState(true); // Neuer State für Ladezustand der Dateien
   const [isUploading, setIsUploading] = useState(false); // Neuer State für Upload-Ladezustand
   const [isDeleting, setIsDeleting] = useState(null); // Speichert die ID der Datei, die gerade gelöscht wird
+  
+
+
 
   const fetchFiles = async () => {
     try {
