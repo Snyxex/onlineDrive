@@ -1,0 +1,337 @@
+/* Allgemeine Variablen */
+:root {
+  --secondcolor: rgb(0, 0, 0);
+  --firstcolor: white;
+  --accent: #666;
+  --disabled-color: #aaa; /* Neue Variable für deaktivierte Elemente */
+  --disabled-bg: #e0e0e0; /* Neue Variable für Hintergrund von deaktivierten Elementen */
+}
+
+/* Darkmode Variablen */
+.darkmode {
+  --secondcolor: #c3c3c3;
+  --firstcolor: rgb(21, 37, 58);
+  --disabled-color: #666;
+  --disabled-bg: #333;
+}
+
+.top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: var(--secondcolor);
+  font-size: 1.5rem;
+  z-index: 1000;
+  border-bottom: 2px solid var(--secondcolor); /* Nur unten einen Rand */
+  background-color: var(--firstcolor);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1); /* Subtilerer Schatten */
+  box-sizing: border-box;
+}
+
+/* Stil für den Logout-Button */
+.logout-btn {
+  border-radius: 5px;
+  position: absolute; /* Absolute Positionierung innerhalb von .top */
+  right: 20px;
+  background-color: transparent;
+  border: 2px solid var(--secondcolor);
+  color: var(--secondcolor);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px 10px; 
+}
+
+.logout-btn:hover {
+  color: var(--firstcolor);
+  background-color: var(--secondcolor);
+  transform: translateY(-50%) scale(1.05); /* Leichter Hoch-Effekt und Skalierung */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  width: 100%; /* Sicherstellen, dass es die volle Breite einnimmt */
+  margin-top: 80px; /* Mehr Abstand zum Top-Menü */
+  box-sizing: border-box;
+  max-width: none; /* Entfernen, um volle Breite zu ermöglichen */
+}
+
+.file {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--secondcolor);
+  width: 100%;
+
+  padding: 10px 15px;
+  border: 2px solid var(--secondcolor);
+  border-radius: 5px;
+  font-size: 1.2rem;
+  min-height: 50px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1); /* Subtilerer Schatten */
+  box-sizing: border-box;
+}
+
+.upload {
+  text-align: center;
+  font-size: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* Allgemeine Button-Stile - Diese sollten ZUERST kommen, damit spezifische Klassen sie überschreiben können */
+button {
+  border: 2px solid var(--secondcolor);
+  background-color: var(--firstcolor);
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-weight: bold;
+  height: 40px; /* Konsistente Höhe für die meisten Buttons */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  color: var(--secondcolor);
+}
+
+/* Hover-Effekt für alle Buttons (außer disabled) */
+button:hover:not([disabled]) {
+  color: var(--firstcolor);
+  background-color: var(--secondcolor);
+  transform: translateY(-2px); /* Das ist der Übeltäter */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Stil für deaktivierte Buttons */
+button:disabled {
+  background-color: var(--disabled-bg);
+  color: var(--disabled-color);
+  border-color: var(--disabled-color);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+/* SPEZIFISCHER STIL FÜR UPLOAD-BUTTON - Überschreibt allgemeine Button-Stile */
+.upload-btn {
+  height: 50px; /* Größere Höhe für den Upload-Button */
+  padding: 15px 90px; /* Mehr Padding für bessere Klickfläche */
+  font-size: 1.2rem; /* Größere Schrift */
+}
+
+/* Spezifische Stile für Settings-, Download- und Delete-Buttons */
+.settings,
+.download-btn,
+.delete-btn {
+  /* Diese Buttons können weiterhin die allgemeinen Button-Stile verwenden,
+     da sie hier keine speziellen Höhen oder Paddings benötigen, die die
+     allgemeine 'button' Regel überschreiben würden. */
+}
+
+.filesearch {
+  border: 2px solid var(--secondcolor);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 50px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  padding: 10px 15px;
+  box-sizing: border-box;
+}
+
+.filesearch form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.filesearch input {
+  width: 100%;
+  height: 25px;
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  border: 2px solid var(--secondcolor);
+  border-radius: 5px;
+  color: var(--secondcolor);
+  background-color: var(--firstcolor);
+  box-sizing: border-box;
+}
+
+.filesearch input:disabled {
+  background-color: var(--disabled-bg);
+  color: var(--disabled-color);
+  cursor: not-allowed;
+}
+
+.filelist {
+  box-sizing: border-box;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid var(--secondcolor);
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  background-color: var(--firstcolor);
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.file-item:last-child {
+  margin-bottom: 0;
+}
+
+.file-item:hover {
+  color: var(--firstcolor);
+  background-color: var(--secondcolor);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Überschreibe Farbe der inneren Elemente beim Hover von .file-item */
+.file-item:hover .file-info,
+.file-item:hover .file-name,
+.file-item:hover .file-details,
+.file-item:hover .file-size,
+.file-item:hover .file-date {
+  color: var(--firstcolor);
+}
+
+.file-item:hover .file-size,
+.file-item:hover .file-date {
+  background-color: var(--secondcolor);
+  border-color: var(--firstcolor);
+}
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  color: var(--secondcolor);
+  box-sizing: border-box;
+}
+
+.file-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.file-details {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9em;
+  color: var(--accent);
+  box-sizing: border-box;
+}
+
+.file-size,
+.file-date {
+  padding: 2px 5px;
+  background-color: var(--firstcolor);
+  border-radius: 3px;
+  border: 1px solid var(--secondcolor);
+  box-sizing: border-box;
+}
+
+.download-btn,
+.delete-btn {
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+.keinedatei,
+.loading-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--secondcolor);
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  background-color: var(--firstcolor);
+  font-size: 1.1rem;
+  color: var(--secondcolor);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Responsivität für kleinere Bildschirme */
+@media (max-width: 768px) {
+  .top {
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .logout-btn {
+    right: 10px;
+    font-size: 1rem;
+    padding: 3px 8px;
+  }
+
+  .dashboard-main-content {
+    padding: 10px; /* Reduziertes Padding auf kleineren Bildschirmen */
+    margin-top: 60px; /* Anpassung des Abstands zum Top-Menü */
+  }
+
+  .file {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px; /* Abstand zwischen Elementen im File-Bereich */
+    padding: 10px;
+  }
+
+  .upload {
+    width: 100%; /* Volle Breite für den Upload-Bereich */
+    text-align: left;
+  }
+
+  .file-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px; /* Abstand zwischen Elementen in der Dateiliste */
+    padding: 10px;
+  }
+
+  .file-info {
+    width: 100%;
+  }
+
+  .download-btn,
+  .delete-btn {
+    width: 100%; /* Buttons nehmen volle Breite ein */
+    margin-left: 0; /* Kein linker Margin mehr */
+    margin-top: 5px; /* Kleiner Abstand nach oben */
+  }
+
+  .upload-btn {
+    width: 100%; /* Upload-Button nimmt volle Breite ein */
+    padding: 10px 15px; /* Angepasstes Padding für kleinere Bildschirme */
+  }
+}

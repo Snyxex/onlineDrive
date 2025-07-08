@@ -1,4 +1,3 @@
-
 import { Request, Response, NextFunction } from "express"; // Ensure NextFunction is imported
 import bcrypt from "bcrypt";
 import User, { IUserDocument } from "../model/user";
@@ -32,7 +31,7 @@ export async function signin(request: Request, response: Response): Promise<void
         });
         response.status(200).json({
           message: "User is signed in successfully",
-          body: { token, user: { _id: user._id.toString(), userName: user.userName, email: user.email, role: user.role } },
+          body: { token, user: { _id: user._id.toString(), userName: user.userName, email: user.email, role: user.role, theme: user.theme } },
         });
       } else {
         response.status(401).json({ message: "Password is incorrect" });
@@ -250,13 +249,12 @@ export async function updateEmail(request: Request, response: Response): Promise
       return;
     }
 
-    const existingUserWithEmail: IUserDocument | null = await User.findOne({ email: newEmail.toLowerCase() });
+    const existingUserWithEmail: IUserDocument | null = await User.findOne({ email: newEmail });
     if (existingUserWithEmail && existingUserWithEmail._id.toString() !== request.user._id) {
-      response.status(409).json({ message: "Email address already in use by another account." });
+      response.status(409).json({ message: "Email already taken." });
       return;
     }
 
-    // Applied type assertion here
     const user: IUserDocument | null = await User.findById(request.user._id) as IUserDocument | null;
 
     if (!user) {
@@ -264,11 +262,11 @@ export async function updateEmail(request: Request, response: Response): Promise
       return;
     }
 
-    user.email = newEmail.toLowerCase().trim();
+    user.email = newEmail.trim();
     await user.save();
 
     response.status(200).json({
-      message: "Email address updated successfully.",
+      message: "Email updated successfully.",
       user: {
         _id: user._id.toString(),
         userName: user.userName,
@@ -279,7 +277,7 @@ export async function updateEmail(request: Request, response: Response): Promise
   } catch (error: any) {
     logger.error("Error updating email:", error);
     response.status(500).json({
-      message: "Error updating email address",
+      message: "Error updating email",
       error: error instanceof Error ? error.message : String(error),
     });
   }
@@ -287,23 +285,23 @@ export async function updateEmail(request: Request, response: Response): Promise
 
 export async function updatePassword(request: Request, response: Response): Promise<void> {
   try {
-    // Stellen Sie sicher, dass der Benutzer authentifiziert ist (mittels JWT im Header)
     if (!request.user || !request.user._id) {
       response.status(401).json({ message: "Authentication required." });
       return;
     }
 
-    // Nur das neue Passwort wird aus dem Request-Body extrahiert
-    const { newPassword } = request.body;
+    const { oldPassword, newPassword } = request.body;
 
-    // Überprüfung des neuen Passworts: Es muss existieren, ein String sein und eine Mindestlänge haben
-    // Hinweis: 'oldPassword' wurde hier aus der Prüfung entfernt, da es nicht mehr benötigt wird
-    if (!newPassword || typeof newPassword !== 'string' || newPassword.length < 6) {
-      response.status(400).json({ message: "New password is required and must be at least 6 characters." });
+    if (!oldPassword || typeof oldPassword !== 'string' || oldPassword.trim().length === 0) {
+      response.status(400).json({ message: "Old password is required." });
       return;
     }
 
-    // Benutzer in der Datenbank finden, basierend auf der ID aus dem JWT
+    if (!newPassword || typeof newPassword !== 'string' || newPassword.trim().length < 6) {
+      response.status(400).json({ message: "New password must be at least 6 characters long." });
+      return;
+    }
+
     const user: IUserDocument | null = await User.findById(request.user._id) as IUserDocument | null;
 
     if (!user) {
@@ -311,19 +309,19 @@ export async function updatePassword(request: Request, response: Response): Prom
       return;
     }
 
-    // *** Die Zeilen zur Überprüfung des alten Passworts wurden entfernt: ***
-    // const isPasswordMatched = await user.authenticate(oldPassword);
-    // if (!isPasswordMatched) {
-    //   response.status(401).json({ message: "Incorrect old password." });
-    //   return;
-    // }
+    const isPasswordMatched = await user.authenticate(oldPassword);
+    if (!isPasswordMatched) {
+      response.status(401).json({ message: "Incorrect old password." });
+      return;
+    }
 
-    // Das neue Passwort hashen und speichern
-    const newHashPassword = await bcrypt.hash(newPassword, 10);
-    user.hash_password = newHashPassword;
+    user.hash_password = await bcrypt.hash(newPassword, 10);
     await user.save();
 
-    response.status(200).json({ message: "Password updated successfully." });
+    response.status(200).json({
+      message: "Password updated successfully.",
+    });
+
   } catch (error: any) {
     logger.error("Error updating password:", error);
     response.status(500).json({
@@ -333,50 +331,73 @@ export async function updatePassword(request: Request, response: Response): Prom
   }
 }
 
-
 export async function deleteAccount(request: Request, response: Response): Promise<void> {
   try {
-    // 1. Authentifizierung überprüfen
     if (!request.user || !request.user._id) {
-      response.status(401).json({ message: "Authentication required to delete an account." });
-      logger.warn("Account deletion attempt without authentication.");
+      response.status(401).json({ message: "Authentication required." });
       return;
     }
 
     const userId = request.user._id;
 
-    // 2. ID-Format validieren
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      response.status(400).json({ message: "Invalid user ID format." });
-      logger.warn(`Account deletion failed: Invalid ID format for user ${userId}`);
+    const user: IUserDocument | null = await User.findById(userId) as IUserDocument | null;
+    if (!user) {
+      response.status(404).json({ message: "User not found." });
       return;
     }
 
-    // 3. Benutzer finden und löschen
-    // Finde den Benutzer anhand der ID aus dem JWT-Token und lösche ihn
-    const deletedUser: IUserDocument | null = await User.findByIdAndDelete(userId) as IUserDocument | null;
+    await User.findByIdAndDelete(userId);
 
-    if (!deletedUser) {
-      // Dies sollte theoretisch nicht passieren, wenn der Token gültig war,
-      // aber es ist eine Sicherheitsmaßnahme.
-      response.status(404).json({ message: "User account not found." });
-      logger.warn(`Account deletion failed: User with ID ${userId} not found.`);
-      return;
-    }
-
-    // 4. Erfolgreiche Antwort senden
     response.status(200).json({
-      message: "User account deleted successfully.",
-      deletedUserId: deletedUser._id.toString(),
-      deletedUsername: deletedUser.userName,
-      deletedEmail: deletedUser.email
+      message: "Account deleted successfully."
     });
-    logger.info(`User account deleted: ${deletedUser.email} (ID: ${deletedUser._id})`);
-
   } catch (error: any) {
-    logger.error("Error during account deletion:", error);
+    logger.error("Error deleting account:", error);
     response.status(500).json({
-      message: "Error deleting user account.",
+      message: "Error deleting account",
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+}
+
+export async function updateTheme(request: Request, response: Response): Promise<void> {
+  try {
+    if (!request.user || !request.user._id) {
+      response.status(401).json({ message: "Authentication required." });
+      return;
+    }
+
+    const { newTheme } = request.body;
+
+    if (!newTheme || (newTheme !== "dark" && newTheme !== "light")) {
+      response.status(400).json({ message: "New theme must be 'dark' or 'light'." });
+      return;
+    }
+
+    const user: IUserDocument | null = await User.findById(request.user._id) as IUserDocument | null;
+
+    if (!user) {
+      response.status(404).json({ message: "User not found." });
+      return;
+    }
+
+    user.theme = newTheme;
+    await user.save();
+
+    response.status(200).json({
+      message: "Theme updated successfully.",
+      user: {
+        _id: user._id.toString(),
+        userName: user.userName,
+        email: user.email,
+        role: user.role,
+        theme: user.theme,
+      },
+    });
+  } catch (error: any) {
+    logger.error("Error updating theme:", error);
+    response.status(500).json({
+      message: "Error updating theme",
       error: error instanceof Error ? error.message : String(error),
     });
   }

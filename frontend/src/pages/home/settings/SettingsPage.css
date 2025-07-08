@@ -1,0 +1,341 @@
+/* Allgemeine Variablen */
+:root {
+  --secondcolor: rgb(0, 0, 0);
+  --firstcolor: rgb(255, 255, 255);
+  --accent-color: #666;
+  --disabled-color: #aaa;
+  --disabled-bg: #e0e0e0;
+
+  /* Typografie - Dynamisch mit clamp() für bessere Skalierung */
+  --font-family-primary: 'Calibri', sans-serif;
+  --font-size-base: clamp(0.875rem, 0.5vw + 0.75rem, 1rem); /* 14px - 16px */
+  --font-size-lg: clamp(1rem, 0.75vw + 0.8rem, 1.25rem);    /* 16px - 20px */
+  --font-size-xl: clamp(1.4rem, 1vw + 1rem, 1.8rem);       /* 22.4px - 28.8px */
+  --font-size-2xl: clamp(1.8rem, 1.5vw + 1rem, 2.2rem);    /* For h1, 28.8px - 35.2px */
+
+
+  /* Abstände - Dynamisch mit clamp() oder vw/vh */
+  --spacing-xxs: clamp(2px, 0.2vw + 1px, 4px);
+  --spacing-xs: clamp(4px, 0.4vw + 2px, 8px);
+  --spacing-sm: clamp(8px, 0.6vw + 4px, 12px);
+  --spacing-md: clamp(12px, 0.8vw + 8px, 16px);
+  --spacing-lg: clamp(16px, 1vw + 10px, 24px);
+  --spacing-xl: clamp(24px, 1.5vw + 12px, 32px);
+  --spacing-xxl: clamp(32px, 2vw + 16px, 48px); /* For larger gaps/margins */
+
+  /* Farben für Schatten und Border, zur besseren Kontrolle */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --border-color: rgba(0, 0, 0, 0.15); /* Etwas weicher als reines secondcolor */
+}
+
+.darkmode {
+  --secondcolor: rgb(195, 195, 195);
+  --firstcolor: rgb(21, 37, 58);
+  --disabled-color: #666;
+  --disabled-bg: #333;
+  --shadow-color: rgba(0, 0, 0, 0.4); /* Dunklerer Schatten im Darkmode */
+  --border-color: rgba(195, 195, 195, 0.2);
+}
+
+/* Diese body-Regeln werden entfernt, da sie in index.css global definiert sein sollten */
+/* body {
+  font-family: var(--font-family-primary);
+  background-color: var(--firstcolor);
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-lg);
+  box-sizing: border-box;
+} */
+
+.settings-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: var(--spacing-lg); /* Dynamisches Padding */
+  box-sizing: border-box;
+  
+}
+
+.settings-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  max-width: 90vw; /* Maximal 90% der Viewport-Breite, aber nicht über 950px */
+  min-width: clamp(320px, 60vw, 700px); /* Skaliert zwischen 320px und 700px */
+  width: 90%; /* Grundbreite */
+  background-color: var(--firstcolor);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px var(--shadow-color);
+  box-sizing: border-box;
+  padding: var(--spacing-lg); /* Einheitliches Padding rundum */
+  border-radius: 5px;
+  border: 2px solid var(--secondcolor);
+}
+
+.settings-header {
+  width: 100%;
+  min-height: 60px;
+  padding: var(--spacing-md) var(--spacing-lg); /* Dynamisches Padding */
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--secondcolor);
+  font-size: var(--font-size-lg); /* Dynamische Schriftgröße */
+  box-sizing: border-box;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background-color: var(--firstcolor);
+}
+
+.settings-header h1 {
+  margin: 0;
+  font-size: var(--font-size-2xl); /* Größere, dynamische Schriftgröße für h1 */
+}
+
+.back-to-dashboard-btn {
+  color: var(--secondcolor);
+  text-decoration: none;
+  border: 2px solid var(--secondcolor);
+  padding: var(--spacing-xs) var(--spacing-md); /* Dynamisches Padding */
+  border-radius: 5px;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.back-to-dashboard-btn:hover {
+  background-color: var(--secondcolor);
+  color: var(--firstcolor);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.back-to-dashboard-btn:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Nimmt die volle Breite im Card an */
+  padding: var(--spacing-md) 0; /* Vertikales Padding */
+  border-bottom: 1px solid var(--border-color);
+  color: var(--secondcolor);
+  font-size: var(--font-size-base); /* Dynamische Schriftgröße */
+  box-sizing: border-box;
+}
+
+.setting-item:last-of-type {
+  border-bottom: none;
+}
+
+.setting-label {
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+button, .setting-btn {
+  border: 2px solid var(--secondcolor);
+  background-color: var(--firstcolor);
+  padding: var(--spacing-xs) var(--spacing-md); /* Dynamisches Padding */
+  border-radius: 5px;
+  font-size: var(--font-size-base); /* Dynamische Schriftgröße */
+  cursor: pointer;
+  font-weight: bold;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  color: var(--secondcolor);
+  text-decoration: none;
+}
+
+button:hover:not([disabled]), .setting-btn:hover:not([disabled]) {
+  color: var(--firstcolor);
+  background-color: var(--secondcolor);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+button:active:not([disabled]), .setting-btn:active:not([disabled]) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+button:focus:not([disabled]), .setting-btn:focus:not([disabled]) {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+button:disabled, .setting-btn:disabled {
+  background-color: var(--disabled-bg);
+  color: var(--disabled-color);
+  border-color: var(--disabled-color);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+.theme-toggle-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%; /* Kreisförmig */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+/* Lade-Spinner für Buttons */
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid var(--secondcolor);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Logout Button - Jetzt dynamischer */
+.logout-btn {
+  color: var(--secondcolor);
+  text-decoration: none;
+  border: 2px solid var(--secondcolor);
+  padding: var(--spacing-xs) var(--spacing-md); /* Dynamisches Padding */
+  border-radius: 5px;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+  /* Removed fixed positioning, as it will be in the footer */
+}
+
+.logout-btn:hover {
+  background-color: var(--secondcolor);
+  color: var(--firstcolor);
+}
+
+.setting-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-md) 0;
+  margin-top: var(--spacing-xl); /* Dynamischer Abstand */
+  border-top: 1px solid var(--border-color);
+  box-sizing: border-box;
+  gap: var(--spacing-lg); /* Dynamischer Abstand zwischen Elementen */
+}
+
+/* Responsivität für Bildschirme (neue Breakpoints und Anpassungen) */
+
+/* Anpassungen für mittelgroße Bildschirme (z.B. Tablets im Querformat) */
+@media (max-width: 950px) {
+  .settings-card {
+    min-width: 60vw; /* Erlaubt der Karte, etwas schmaler zu werden */
+  }
+}
+
+/* Anpassungen für kleinere Bildschirme (Tablets hochkant, große Handys) */
+@media (max-width: 768px) {
+  .settings-page-container {
+    padding: var(--spacing-sm); /* Dynamisches Padding */
+  }
+
+  .settings-card {
+    width: 95%; /* Etwas mehr Platz zu den Rändern */
+    max-width: 100%; /* Sicherstellen, dass es nicht überläuft */
+    min-width: unset; /* Keine Mindestbreite, damit es auf Mobilgeräten schrumpfen kann */
+    margin: var(--spacing-sm) auto; /* Zentrieren und dynamischer Rand */
+    padding: var(--spacing-md); /* Weniger Padding */
+  }
+
+  .settings-header {
+    flex-direction: column;
+    gap: var(--spacing-xs); /* Dynamischer Abstand */
+    padding: var(--spacing-md); /* Dynamisches Padding */
+    font-size: var(--font-size-base);
+    text-align: center;
+  }
+
+  .settings-header h1 {
+    font-size: var(--font-size-lg); /* Dynamische Schriftgröße */
+  }
+
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs); /* Dynamischer Abstand */
+    padding: var(--spacing-sm) 0; /* Dynamisches Padding */
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .setting-label {
+    width: 100%;
+    text-align: left;
+  }
+
+  button, .setting-btn {
+    width: 100%; /* Buttons nehmen volle Breite ein */
+    margin-top: var(--spacing-xs); /* Dynamischer Rand */
+  }
+
+  .theme-toggle-btn {
+    border-radius: 5px; /* Auf kleinen Bildschirmen rechteckig */
+  }
+
+  .logout-btn {
+    width: 100%; /* Nimmt volle Breite ein */
+    /* If placed in footer, no need for margin-left/right auto here */
+  }
+
+  .setting-footer {
+    flex-direction: column; /* Elemente untereinander */
+    gap: var(--spacing-md); /* Dynamischer Abstand */
+    padding: var(--spacing-md) 0;
+    margin-top: var(--spacing-lg); /* Dynamischer Rand */
+  }
+  .setting-footer > * {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Anpassungen für sehr kleine Bildschirme (z.B. iPhone SE) */
+@media (max-width: 480px) {
+  .settings-page-container {
+    padding: var(--spacing-xs); /* Noch weniger Padding am Rand */
+  }
+
+  .settings-card {
+    padding: var(--spacing-sm); /* Noch weniger Padding innerhalb der Karte */
+  }
+
+  .settings-header h1 {
+    font-size: var(--font-size-base); /* Noch kleinere Überschrift */
+  }
+}

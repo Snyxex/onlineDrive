@@ -7,6 +7,7 @@ export interface IUserProperties {
   email: string;
   hash_password: string;
   role: "user" | "admin";
+  theme: "dark" | "light";
 }
 
 // Define the methods that will be available on a user document instance
@@ -53,6 +54,11 @@ const userSchema = new Schema<IUserDocument, IStaticUserModel>( // Use IUserDocu
       type: String,
       enum: ["user", "admin"],
       default: "user",
+    },
+    theme: {
+      type: String,
+      enum: ["dark", "light"],
+      default: "light",
     },
   },
   {

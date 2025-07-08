@@ -7,7 +7,8 @@ import {
   getUserByID,
   updateUsername, 
   updateEmail,    
-  updatePassword  ,
+  updatePassword,
+  updateTheme,
   deleteAccount
 } from "../controllers/user";
 import { requireSignin, checkAdmin } from "../common/user";
@@ -24,6 +25,7 @@ router.get("/user/:_id", requireSignin, getUserByID);
 router.put("/user/update-username", requireSignin, updateUsername); // User can update their own username
 router.put("/user/update-email", requireSignin, updateEmail);       // User can update their own email
 router.put("/user/update-password", requireSignin, updatePassword); // User can update their own password
+router.put("/user/update-theme", requireSignin, updateTheme);       // User can update their own theme
 
 router.delete("/user/delete-account", requireSignin, deleteAccount); // User can delete their own account
 

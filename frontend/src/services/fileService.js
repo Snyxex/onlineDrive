@@ -3,7 +3,10 @@ import axios from 'axios';
 const API_URL = '/api';
 
 const getAuthHeaders = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const userString = localStorage.getItem('user');
+   
+    const user = userString ? JSON.parse(userString) : null;
+   
     if (user && user.token) {
         // Füge hier auch einen Content-Type für JSON-Anfragen hinzu,
         // obwohl bei Dateiuploads oft 'multipart/form-data' verwendet wird.
@@ -15,7 +18,8 @@ const getAuthHeaders = () => {
             } 
         };
     }
-    return {};
+    // Throw an error if no user or token is found
+    throw new Error("Authentication required: No user or token found.");
 };
 
 // Upload file
@@ -34,6 +38,7 @@ const uploadFile = async (fileData) => {
 // Get user files
 const getFiles = async () => {
     const config = getAuthHeaders();
+   
     const response = await axios.get(`${API_URL}/files`, config);
     return response.data;
 };
@@ -59,7 +64,7 @@ const downloadFile = async (fileId, fileName) => {
 // Delete file
 const deleteFile = async (fileId) => {
     const config = getAuthHeaders();
-    const response = await axios.delete(`${API_URL}/${fileId}`, config);
+    const response = await axios.delete(`${API_URL}/file/${fileId}`, config);
     return response.data;
 };
 

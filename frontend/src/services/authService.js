@@ -15,8 +15,8 @@ const axiosInstance = axios.create({
 // Register user
 const register = async (userData) => {
     const response = await axiosInstance.post('/signup', userData);
-    if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data));
+    if (response.data && response.data.body) {
+        localStorage.setItem('user', JSON.stringify(response.data.body));
     }
     return response.data;
 };
@@ -24,8 +24,8 @@ const register = async (userData) => {
 // Login user
 const login = async (userData) => {
     const response = await axiosInstance.post('/signin', userData);
-    if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data));
+    if (response.data && response.data.body) {
+        localStorage.setItem('user', JSON.stringify(response.data.body));
     }
     return response.data;
 };
@@ -35,10 +35,23 @@ const logout = () => {
     localStorage.removeItem('user');
 };
 
+// Get current user
+const getCurrentUser = () => {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+};
+
+// Update user in localStorage (for theme changes etc.)
+const updateUser = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+};
+
 const authService = {
     register,
     login,
     logout,
+    getCurrentUser,
+    updateUser,
 };
 
 export default authService;

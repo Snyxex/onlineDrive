@@ -1,0 +1,121 @@
+:root {
+    --secondcolor: rgb(0, 0, 0);
+    --firstcolor: rgb(255, 255, 255);
+  }
+  
+  .darkmode {
+    --secondcolor: rgb(195, 195, 195);
+    --firstcolor: rgb(21, 37, 58);
+  }
+  
+  body {
+    font-family: Calibri, sans-serif;
+    background-color: var(--firstcolor);
+    margin: 0;
+    height: 100vh; /* Vollständige Viewport-Höhe */
+  }
+  .center {
+    display: flex;
+    flex-direction: column; /* Vertikale Anordnung */
+    justify-content: flex-start; /* Inhalt oben ausrichten */
+    align-items: center; /* Horizontal zentrieren */
+    height: 60vh;
+    width: 60vw;
+    border: 2px solid var(--secondcolor);
+    margin: 20vh 20vw;
+    border-radius: 5px;
+    box-shadow: 0 0px 2px 0 var(--secondcolor);
+  }
+  
+  .top {
+    width: 100%; /* Volle Breite des Elternelements (.center) */
+    height: 8vh;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    color: var(--secondcolor);
+    font-size: 120%;
+  
+    border-bottom: 2px solid var(--secondcolor);
+    box-shadow: 0 0px 2px 0 var(--secondcolor); /* Nur unten */
+  }
+  
+  .box {
+    width: 95%; /* Volle Breite des Elternelements (.center) */
+    height: 8vh;
+    margin-top: 4vh;
+    margin-bottom: 0vh; /* Korrigiert von "ovh" */
+    padding: 0;
+    border: none;
+    border-radius: 0;
+  
+    display: flex;
+    align-items: center;
+  
+    color: var(--secondcolor);
+    font-size: 120%;
+  
+    border: 2px solid var(--secondcolor);
+    box-shadow: 0 0px 2px 0 var(--secondcolor);
+    border-radius: 5px;
+  }
+  
+  .inbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Volle Breite nutzen */
+    margin-left: 1vw;
+    margin-right: 1vw;
+    padding: 0.5vh 0; /* Reduzierter Abstand */
+    font-weight: 1000;
+    font-size: 150%;
+  }
+  .text {
+    width: 100%;
+    height: 5vh;
+    font-size: 2.5vw;
+    padding: 0.5vh 1vw;
+  
+    border: 2px solid var(--secondcolor);
+    border-radius: 5px;
+    color: var(--secondcolor);
+  }
+  .change {
+    width: 95%;
+    height: 8vh;
+    margin-top: 2vh;
+    margin-bottom: 0vh;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Text horizontal zentrieren */
+  
+    color: var(--secondcolor);
+    font-size: 120%;
+  }
+  
+  .change a {
+    color: var(--secondcolor);
+  
+    font-size: 170%;
+    font-weight: bold;
+    padding: 1vh 2vw;
+    border-radius: 5px;
+    margin: 2vh;
+    transition: all 0.3s ease;
+  }
+  
+  .change a:hover {
+    color: var(--firstcolor);
+    background-color: var(--secondcolor);
+    transform: scale(1.05);
+  }
+  
