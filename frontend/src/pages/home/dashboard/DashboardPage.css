@@ -5,6 +5,9 @@
   --accent: #666;
   --disabled-color: #aaa; /* Neue Variable für deaktivierte Elemente */
   --disabled-bg: #e0e0e0; /* Neue Variable für Hintergrund von deaktivierten Elementen */
+  --progress-bar-bg: #e0e0e0; /* Standard Hintergrund für Progress Bar */
+  --progress-bar-fill-light: #4CAF50; /* Grüne Füllung für Progress Bar im Light Mode */
+  --error-text-color: #dc3545; /* Rot für Fehlermeldungen */
 }
 
 /* Darkmode Variablen */
@@ -13,6 +16,9 @@
   --firstcolor: rgb(21, 37, 58);
   --disabled-color: #666;
   --disabled-bg: #333;
+  --progress-bar-bg: #555; /* Hintergrund für Progress Bar im Dark Mode */
+  --progress-bar-fill-dark: #62b366; /* Helle grüne Füllung für Progress Bar im Dark Mode */
+  --error-text-color: #ff6b6b; /* Helles Rot für Fehlermeldungen im Dark Mode */
 }
 
 .top {
@@ -115,7 +121,7 @@ button {
 button:hover:not([disabled]) {
   color: var(--firstcolor);
   background-color: var(--secondcolor);
-  transform: translateY(-2px); /* Das ist der Übeltäter */
+  transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -334,4 +340,90 @@ button:disabled {
     width: 100%; /* Upload-Button nimmt volle Breite ein */
     padding: 10px 15px; /* Angepasstes Padding für kleinere Bildschirme */
   }
+}
+
+/* --- NEUE STYLES FÜR SPEICHERANZEIGE UND FEHLERMELDUNGEN --- */
+
+.storage-info {
+    margin: 20px auto;
+    width: 100%; /* Passt sich an vorhandenes Padding an */
+    max-width: 600px; /* Kannst du beibehalten oder entfernen, je nach Layout */
+    background-color: var(--firstcolor); /* Hintergrundfarbe basierend auf Theme */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+    color: var(--secondcolor); /* Textfarbe basierend auf Theme */
+    border: 2px solid var(--secondcolor); /* Border basierend auf Theme */
+    box-sizing: border-box; /* Sicherstellen, dass Padding und Border in der Breite enthalten sind */
+}
+
+.storage-info span {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.storage-info progress {
+    width: 100%;
+    height: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--progress-bar-bg); /* Hintergrundfarbe der Progress Bar */
+    /* Dies behebt ein bekanntes Problem, bei dem die Bar im Darkmode nicht sichtbar war */
+    overflow: hidden; /* Stellt sicher, dass die Füllung innerhalb der BorderRadius bleibt */
+}
+
+/* Stil für den Füllstand der Progress Bar (Webkit-Browser wie Chrome, Safari) */
+.storage-info progress::-webkit-progress-bar {
+    background-color: var(--progress-bar-bg);
+    border-radius: 5px;
+}
+.storage-info progress::-webkit-progress-value {
+    background-color: var(--progress-bar-fill-light); /* Standard: Grün für Light Mode */
+    border-radius: 5px;
+    transition: width 0.5s ease-in-out;
+}
+
+/* Stil für den Füllstand der Progress Bar (Firefox) */
+.storage-info progress::-moz-progress-bar {
+    background-color: var(--progress-bar-fill-light); /* Standard: Grün für Light Mode */
+    border-radius: 5px;
+}
+
+/* Darkmode spezifische Farben für die Progress Bar Füllung */
+.darkmode .storage-info progress::-webkit-progress-value {
+    background-color: var(--progress-bar-fill-dark);
+}
+.darkmode .storage-info progress::-moz-progress-bar {
+    background-color: var(--progress-bar-fill-dark);
+}
+
+/* Meldung, wenn der Speicher voll ist */
+.storage-full-message {
+    color: var(--error-text-color); /* Rot für Warnung/Fehler */
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 0.95em;
+}
+
+/* Allgemeine Fehlermeldungen (z.B. bei Upload-Fehlern) */
+.error-message {
+    color: var(--error-text-color);
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+/* Responsivität für die Speicheranzeige auf kleineren Bildschirmen */
+@media (max-width: 768px) {
+    .storage-info {
+        padding: 10px;
+        margin: 15px auto;
+    }
+    .storage-info span {
+        font-size: 1rem;
+    }
 }

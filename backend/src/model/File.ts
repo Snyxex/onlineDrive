@@ -1,47 +1,41 @@
+// model/File.ts
 import mongoose, { Schema, HydratedDocument, Model, Types } from "mongoose";
 
 // 1. Define the core interface for your document's properties.
-// This interface represents the "plain" data shape of your document.
 export interface IFile {
     userId: Types.ObjectId;
     filename: string;
-    data: Buffer;
+    data: Buffer; // <-- Das Datei-Buffer-Feld ist wieder da
     mimetype: string;
     size: number;
-    // createdAt and updatedAt are handled by timestamps: true,
-    // but good to include in the interface for type safety.
     createdAt: Date;
-    updatedAt: Date; // Not optional, as timestamps: true makes it required
+    updatedAt: Date;
 }
 
-// 2. Define the Document type, which is the hydrated Mongoose document.
-// This type automatically includes _id and Mongoose's document methods.
-// We explicitly define _id here for clarity, though HydratedDocument often infers it.
+// 2. Define the Document type.
 export interface IFileDocument extends HydratedDocument<IFile> {
-    _id: Types.ObjectId; // Explicitly define _id as ObjectId
+    _id: Types.ObjectId;
 }
 
-// 3. Define the Model type, including any custom static methods.
-// The Model type will work with IFileDocument.
+// 3. Define the Model type.
 interface IFileModel extends Model<IFileDocument> {
-    // You can add static methods here, e.g.:
-    // findFilesByUserId(userId: string): Promise<IFileDocument[]>;
+    // Fügen Sie hier bei Bedarf statische Methoden hinzu
 }
 
-// 4. Define the Schema, explicitly typing it with IFileDocument and IFileModel.
+// 4. Define the Schema.
 const fileSchema = new Schema<IFileDocument, IFileModel>(
     {
         userId: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: 'User' // Reference to your User model
+            ref: 'User' // Referenz zu Ihrem User-Modell
         },
         filename: {
             type: String,
             required: true
         },
         data: {
-            type: Buffer,
+            type: Buffer, // <-- Speichert den Dateiinhalt direkt
             required: true
         },
         mimetype: {
@@ -54,13 +48,11 @@ const fileSchema = new Schema<IFileDocument, IFileModel>(
         }
     },
     {
-        timestamps: true // This will automatically add createdAt and updatedAt fields
+        timestamps: true // Fügt automatisch createdAt und updatedAt hinzu
     }
 );
 
 // 5. Create the Mongoose Model.
-// The first generic argument is the Document type (IFileDocument).
-// The second generic argument is the Model type (IFileModel).
 const File = mongoose.model<IFileDocument, IFileModel>('File', fileSchema);
 
 export default File;

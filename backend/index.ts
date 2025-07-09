@@ -2,7 +2,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
+
 import cors from 'cors';
+import helmet from 'helmet';
+import { apiLimiter } from "./src/middleware/rateLimiter";
 
 import { getLogger } from './src/common/logs';
 import connectToMongo from "./src/DB/db";
@@ -18,6 +21,10 @@ connectToMongo();
 const app = express();
 const port = process.env.PORT || 8080;
 const logger = getLogger('Server');
+
+app.use(helmet());
+app.disable('x-powered-by')
+
 
 logger.info('Starting server initialization...');
 
@@ -59,7 +66,7 @@ app.use((req, res, next) => {
 // --- Routes ---
 logger.info('Routes initialized under /api.');
 app.use("/api", authRoutes);
-app.use('/api', fileRoutes);
+app.use('/api', fileRoutes, apiLimiter);
 
 app.get('/', (req, res) => {
   res.send('Hello from API Server!');

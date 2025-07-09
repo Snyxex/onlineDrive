@@ -8,7 +8,12 @@ import multer from "multer";
 const router = express.Router();
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage,
+    limits: {
+        fileSize: 50 * 1024 * 1024 
+        
+    }
+ });
 
 // Route to upload a single file
 router.post("/upload", requireSignin, upload.single("file"), uploadFile);
