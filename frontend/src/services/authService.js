@@ -35,12 +35,26 @@ const updateUserInLocalStorage = (updatedUserObjectFromServer) => {
 // Register user
 const register = async (userData) => {
     const response = await axiosInstance.post('/signup', userData);
+    console.log("Register response:", response.data); // <-- hier loggen
+  
     if (response.data && response.data.body) {
-        // Für Registrierung speichere den vollen body, da er token und user enthält
-        localStorage.setItem('user', JSON.stringify(response.data.body));
+      const { user, token } = response.data.body;
+  
+      if (!token || !user) {
+        throw new Error("Token or user missing in register response.");
+      }
+  
+      const userToStore = {
+        ...user,
+        token
+      };
+  
+      localStorage.setItem('user', JSON.stringify(userToStore));
     }
     return response.data;
-};
+  };
+  
+
 
 // Login user
 const login = async (userData) => {

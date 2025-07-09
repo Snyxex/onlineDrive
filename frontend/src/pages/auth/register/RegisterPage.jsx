@@ -23,26 +23,31 @@ const RegisterPage = () => {
  
     const onSubmit = async (e) => {
         e.preventDefault();
-
+      
         if (password !== password2) {
-            alert('Passwörter stimmen nicht überein');
-        } else {
-            const userData = {
-                username,
-                email,
-                password,
-            };
-
-            try {
-                await authService.register(userData);
-                alert('Registrierung erfolgreich!');
-                navigate('/dashboard'); // Weiterleitung zum Dashboard nach erfolgreicher Registrierung
-            } catch (error) {
-                // Zugriff auf Fehlermeldung vom Backend
-                alert(error.response?.data?.message || 'Fehler bei der Registrierung');
-            }
+          alert('Passwörter stimmen nicht überein');
+          return;  // Hier return nicht vergessen, sonst läuft der Code weiter
         }
-    };
+      
+        const userData = { username, email, password };
+      
+        try {
+          const data = await authService.register(userData);
+          console.log("Registrierungsantwort:", data);
+          console.log("LocalStorage user nach Registration:", localStorage.getItem('user'));
+      
+          alert('Registrierung erfolgreich!');
+          navigate('/dashboard');
+        } catch (error) {
+          console.error("Registrierungsfehler:", error);
+          alert(
+            error.response?.data?.message ||
+            error.message ||
+            'Fehler bei der Registrierung'
+          );
+        }
+      };
+      
     
  
     return (

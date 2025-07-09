@@ -49,67 +49,71 @@ export async function signin(request: Request, response: Response): Promise<void
 export async function signup(request: Request, response: Response): Promise<void> {
   const { username, email, password, role } = request.body;
 
-  // STEP 1: Add robust validation for username at the very beginning
   if (!username || typeof username !== 'string' || username.trim().length === 0) {
     response.status(400).json({ message: "Username is required and cannot be empty." });
     logger.warn(`Signup failed: Username is missing or empty for email: ${email}`);
     return;
   }
 
-  const trimmedUsername = username.trim(); // Ensure it's trimmed for consistency
+  const trimmedUsername = username.trim();
 
   try {
-    const alreadyAUser: IUserDocument | null = await User.findOne({ email });
+    const alreadyAUser = await User.findOne({ email });
     if (alreadyAUser) {
       response.status(409).json({ message: "User is already present with this email address" });
       logger.warn(`Signup failed: Email already exists: ${email}`);
       return;
     }
 
-    // STEP 2: Check for username uniqueness *before* trying to save
-    // This is crucial if you want the provided username to be directly unique
     const existingUsernameUser = await User.findOne({ userName: trimmedUsername });
     if (existingUsernameUser) {
-        response.status(409).json({ message: "This username is already taken. Please choose another." });
-        logger.warn(`Signup failed: Username already taken: ${trimmedUsername}`);
-        return;
+      response.status(409).json({ message: "This username is already taken. Please choose another." });
+      logger.warn(`Signup failed: Username already taken: ${trimmedUsername}`);
+      return;
     }
-
-    // You commented out the random suffix generation, which is good if you want direct usernames.
-    // const finalUserName = trimmedUsername + "@" + Math.floor(Math.random() * 1000000 + 1);
-
-    // This line is the potential issue for the `username: null` error if `username` from `request.body`
-    // happens to be `null` or `undefined` despite your initial check.
-    // If `username` was `""` it would have been caught by the `trim().length === 0` check.
-    // However, if `username` was *literally* `null` from the request, the `trim()` would fail.
-    // But your initial check `!username` should catch `null` and `undefined`.
-    const finalUserName = username; // <--- Using the original 'username' from request.body
 
     const hash_password = await bcrypt.hash(password, 10);
     const _user = new User({
       email,
       hash_password,
-      userName: finalUserName, // Use the final userName
+      userName: trimmedUsername,
       role: role ?? "user",
     });
-    const savedUser: IUserDocument = await _user.save();
+    const savedUser = await _user.save();
+
+    const token = jwt.sign(
+      { _id: savedUser._id.toString(), role: savedUser.role },
+      JWT_SECRET,
+      { expiresIn: '3d' }
+    );
+
     logger.info(`User signed up successfully: ${savedUser.email} with username: ${savedUser.userName}`);
+
     response.status(201).json({
       message: "User is signed up successfully",
-      body: { User: { _id: savedUser._id.toString(), userName: savedUser.userName, email: savedUser.email, role: savedUser.role } },
+      body: {
+        token,
+        user: {
+          _id: savedUser._id.toString(),
+          userName: savedUser.userName,
+          email: savedUser.email,
+          role: savedUser.role,
+          theme: savedUser.theme || null // falls du ein Theme hast
+        }
+      }
     });
   } catch (error: any) {
     logger.error("Error during signup:", error);
     if (error.code === 11000) {
-        response.status(409).json({
-            message: "A user with this email or username already exists.",
-            errorDetail: error.keyValue
-        });
+      response.status(409).json({
+        message: "A user with this email or username already exists.",
+        errorDetail: error.keyValue
+      });
     } else {
-        response.status(500).json({
-            message: "Error while saving the user",
-            error: error instanceof Error ? error.message : String(error),
-        });
+      response.status(500).json({
+        message: "Error while saving the user",
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   }
 }
