@@ -334,31 +334,39 @@ export async function updatePassword(request: Request, response: Response): Prom
 export async function deleteAccount(request: Request, response: Response): Promise<void> {
   try {
     if (!request.user || !request.user._id) {
+      logger.warn("deleteAccount: Unauthenticated request – user not found in request.");
       response.status(401).json({ message: "Authentication required." });
       return;
     }
 
     const userId = request.user._id;
+    logger.info(`deleteAccount: Authenticated user ID: ${userId}`);
 
-    const user: IUserDocument | null = await User.findById(userId) as IUserDocument | null;
+    const user: IUserDocument | null = await User.findById(userId);
     if (!user) {
+      logger.warn(`deleteAccount: User with ID ${userId} not found in database.`);
       response.status(404).json({ message: "User not found." });
       return;
     }
 
     await User.findByIdAndDelete(userId);
+    logger.info(`deleteAccount: User with ID ${userId} deleted successfully.`);
 
     response.status(200).json({
-      message: "Account deleted successfully."
+      message: "Account deleted successfully.",
     });
   } catch (error: any) {
-    logger.error("Error deleting account:", error);
+    logger.error("deleteAccount: Unexpected error", {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     response.status(500).json({
       message: "Error deleting account",
       error: error instanceof Error ? error.message : String(error),
     });
   }
 }
+
 
 export async function updateTheme(request: Request, response: Response): Promise<void> {
   try {

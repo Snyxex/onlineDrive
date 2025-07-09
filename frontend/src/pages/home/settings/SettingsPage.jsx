@@ -3,7 +3,8 @@ import "./SettingsPage.css";
 import authService from "../../../services/authService";
 import { useNavigate, Link } from "react-router-dom";
 // No need for axios or useState/useEffect for dark mode here anymore
-import DarkModeToggle from "../../../components/Darkmode/DarkModeToggle"; // Adjust path as needed
+import DarkModeToggle from "../../../components/Darkmode/DarkModeToggle"; 
+import DeleteAccountButton from "../../../components/DeleteAccount/DeleteAccountButton";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -60,6 +61,9 @@ const Settings = () => {
           <button onClick={handleLogout} className="setting-btn">
             Abmelden
           </button>
+        </div>
+        <div className="setting-footer">
+          <DeleteAccountButton />
         </div>
 
       </div>

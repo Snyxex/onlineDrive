@@ -27,6 +27,6 @@ router.put("/user/update-email", requireSignin, updateEmail);       // Changed _
 router.put("/user/update-password", requireSignin, updatePassword); // Changed _ to -
 router.put("/user/update-theme", requireSignin, updateTheme);       // Changed _ to -
 
-router.delete("/user/delete-account", requireSignin, deleteAccount); // Changed _ to -
+router.delete("/user/delete-account", requireSignin, deleteAccount); 
 
 export default router;
