@@ -37,7 +37,7 @@ const DeleteAccountButton = () => {
             await authService.delete_account();
             
             alert("Your account has been successfully deleted. You are now logged out.");
-            navigate('/signin'); // Oder '/login', je nach deiner Route
+            navigate('/login'); // Oder '/login', je nach deiner Route
             // authService.logout() wird bereits in delete_account aufgerufen
         } catch (err) {
             console.error("Failed to delete account:", err);

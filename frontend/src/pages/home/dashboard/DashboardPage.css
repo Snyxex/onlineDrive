@@ -143,14 +143,8 @@ button:disabled {
   font-size: 1.2rem; /* Größere Schrift */
 }
 
-/* Spezifische Stile für Settings-, Download- und Delete-Buttons */
-.settings,
-.download-btn,
-.delete-btn {
-  /* Diese Buttons können weiterhin die allgemeinen Button-Stile verwenden,
-     da sie hier keine speziellen Höhen oder Paddings benötigen, die die
-     allgemeine 'button' Regel überschreiben würden. */
-}
+
+
 
 .filesearch {
   border: 2px solid var(--secondcolor);
@@ -190,7 +184,10 @@ button:disabled {
 }
 
 .filelist {
-  box-sizing: border-box;
+  border: 2px solid #000000; /* Deutliche Umrandung in passender Farbe */
+  border-radius: 10px; /* Abgerundete Ecken */
+  padding: 10px; /* Innenabstand */
+  background-color: #ffffff; /* Hintergrundfarbe für bessere Sichtbarkeit */
 }
 
 .file-item {
@@ -296,9 +293,12 @@ button:disabled {
   }
 
   .logout-btn {
-    right: 10px;
-    font-size: 1rem;
-    padding: 3px 8px;
+    display: flex;
+    right: 0px;
+    font-size: 2rem;
+    padding: 10px 15px; 
+    position: absolute;
+    top: 75px;
   }
 
   .dashboard-main-content {
@@ -426,4 +426,30 @@ button:disabled {
     .storage-info span {
         font-size: 1rem;
     }
+}
+
+.custom-scrollbar {
+  max-height: 400px; /* Setze die maximale Höhe der Scrollbar */
+  overflow-y: auto; /* Ermöglicht vertikales Scrollen */
+  scrollbar-width: thin; /* Für Firefox */
+  scrollbar-color: #000000 #f1f1f1; /* Für Firefox: Scrollbar-Farbe */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px; /* Breite der Scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Hintergrund der Scrollbar */
+  border-radius: 10px; /* Abgerundete Ecken */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #000000; /* Farbe des Scrollbalkens */
+  border-radius: 10px; /* Abgerundete Ecken */
+  border: 2px solid transparent; /* Abstand zwischen Daumen und Track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #000000; /* Farbe des Scrollbalkens beim Hover */
 }

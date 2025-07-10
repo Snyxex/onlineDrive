@@ -38,7 +38,10 @@ const Main = () => {
   }, [files]);
 
   // Den berechneten Gesamtspeicher in MB speichern
-  const currentUsedStorageMB = calculateTotalStorageMB;
+  const currentUsedStorageMB = useMemo(() => {
+    return calculateTotalStorageMB;
+  }
+  , [calculateTotalStorageMB]);
 
   // NEU: State für Upload-Fehlermeldung (Speicher voll)
   const [storageError, setStorageError] = useState(null);
@@ -201,12 +204,12 @@ const Main = () => {
 
   return (
     <div>
-      <div className="top">
+      <header className="top">
         <h1>OnlineDrive</h1>
         <button type="button" className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
-      </div>
+      </header>
 
       <div className="dashboard-main-content">
         <div className="file">
@@ -229,7 +232,7 @@ const Main = () => {
               {isUploading ? 'Wird hochgeladen...' : (isUploadAllowed ? 'Upload File' : 'Speicher voll')}
             </button>
           </div>
-          <button type="button" className="settings" onClick={handleSettingsClick}>
+          <button type="button" className="upload-btn" onClick={handleSettingsClick}>
             Settings
           </button>
         </div>
@@ -263,7 +266,7 @@ const Main = () => {
           </form>
         </div>
 
-        <div className="filelist">
+        <div className="filelist custom-scrollbar">
           {isLoading ? (
             <p className="loading-message">Dateien werden geladen...</p>
           ) : filteredFiles.length === 0 && searchTerm === "" ? (
@@ -281,14 +284,14 @@ const Main = () => {
                   </div>
                 </div>
                 <button
-                  className="download-btn"
+                  className="upload-btn"
                   onClick={() => downloadFile(file.id, file.name)}
                   disabled={isUploading || isDeleting === file.id}
                 >
                   Download
                 </button>
                 <button
-                  className="delete-btn"
+                  className="upload-btn"
                   onClick={() => handleDelete(file.id)}
                   disabled={isUploading || isDeleting === file.id}
                 >
